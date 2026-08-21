@@ -22,7 +22,7 @@ jobs:
           npx --yes @cyclonedx/cyclonedx-npm --output-file sbom-node.json src/node-service/package.json
 
       - name: Upload SBOM artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sbom-reports
           path: |
