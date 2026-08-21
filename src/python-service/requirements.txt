@@ -3,7 +3,7 @@
 # Bump these to current stable releases before this repo is used for anything real.
 Flask==2.0.1
 Werkzeug==2.0.1
-requests==2.25.1
+requests==2.34.2
 PyYAML==5.3.1
 Jinja2==3.0.1
 MarkupSafe==2.0.1
