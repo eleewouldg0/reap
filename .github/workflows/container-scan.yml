@@ -12,7 +12,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     # Runs after build-and-push.yml has published the image to GHCR
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set image name (lowercase)
         id: image
