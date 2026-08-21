@@ -1,0 +1,36 @@
+name: Generate SBOM
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate CycloneDX SBOM (Python)
+        uses: CycloneDX/gh-python-generate-sbom@v2
+        with:
+          input: src/python-service/requirements.txt
+          output: sbom-python.json
+
+      - name: Generate CycloneDX SBOM (Node)
+        run: |
+          npx --yes @cyclonedx/cyclonedx-npm --output-file sbom-node.json src/node-service/package.json
+
+      - name: Upload SBOM artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-reports
+          path: |
+            sbom-python.json
+            sbom-node.json
+
+      # Placeholder: Upwind can ingest SBOMs directly for source-code SCA correlation
+      - name: Upload SBOM to Upwind (placeholder)
+        run: |
+          echo "Wire in Upwind's SBOM ingestion step here, e.g.:"
+          echo "upwindctl sbom upload sbom-python.json sbom-node.json"

@@ -1,0 +1,67 @@
+name: CI - Build, Test, Shift-Left Scan
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps
+        run: pip install -r src/python-service/requirements.txt
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Node deps
+        run: npm install --prefix src/node-service
+
+  shift-left-secrets-scan:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  shift-left-dependency-review:
+    # Fails the PR if a newly introduced dependency has a known high/critical CVE
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+
+  # Placeholder step for wiring in Upwind's own CLI/action once credentials
+  # are configured in repo secrets (UPWIND_API_TOKEN, UPWIND_ORG_ID, etc.)
+  upwind-shift-left-scan:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Upwind CLI scan (placeholder)
+        run: |
+          echo "Wire in the Upwind CLI / GitHub Action here, e.g.:"
+          echo "upwindctl scan --path . --org \$UPWIND_ORG_ID"

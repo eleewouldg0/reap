@@ -1,0 +1,38 @@
+name: IaC Scan
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "terraform/**"
+      - "kubernetes/**"
+  push:
+    branches: [main]
+    paths:
+      - "terraform/**"
+      - "kubernetes/**"
+  workflow_dispatch:
+
+jobs:
+  terraform-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: tfsec
+        uses: aquasecurity/tfsec-action@v1.0.3
+        with:
+          working_directory: terraform
+
+      - name: Checkov (Terraform + Kubernetes)
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: .
+          framework: terraform,kubernetes
+          soft_fail: true
+
+      # Placeholder for Upwind's IaC posture scanning integration
+      - name: Upwind IaC scan (placeholder)
+        run: |
+          echo "Wire in Upwind's IaC scanning step here, e.g.:"
+          echo "upwindctl iac scan --path terraform --path kubernetes"
