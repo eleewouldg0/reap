@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  python-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+
+  node-service:
+    build:
+      context: ./src/node-service
+    ports:
+      - "3000:3000"

@@ -1,0 +1,8 @@
+# DEMO-FINDING: versions pinned below are intentionally older releases
+# so that SCA tooling (Upwind, Dependabot, etc.) has real CVEs to surface.
+# Bump these to current stable releases before this repo is used for anything real.
+Flask==2.0.1
+Werkzeug==2.0.1
+requests==2.25.1
+PyYAML==5.3.1
+Jinja2==2.11.3

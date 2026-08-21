@@ -1,0 +1,16 @@
+{
+  "name": "upwind-demo-node-service",
+  "version": "1.0.0",
+  "description": "Faux Node service used as an SCA scanning target for the Upwind GitHub integration demo.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"no tests - demo repo\" && exit 0"
+  },
+  "dependencies": {
+    "express": "4.17.1",
+    "lodash": "4.17.15",
+    "axios": "0.21.1",
+    "minimist": "1.2.5"
+  }
+}
