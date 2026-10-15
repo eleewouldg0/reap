@@ -1,6 +1,6 @@
 # DEMO-FINDING: using a full, older base image instead of slim/distroless
 # so container scanning has OS-package CVEs and image-bloat findings to surface.
-FROM python:3.9-buster
+FROM python:3.11-buster
 
 WORKDIR /app
 
